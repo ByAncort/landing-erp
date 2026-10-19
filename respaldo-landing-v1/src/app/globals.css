@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --color-canvas: #f7f6f2;
+  --color-surface: #ffffff;
+  --color-ink: #17191c;
+  --color-ink-soft: #3d4148;
+  --color-ink-mute: #62666e;
+  --color-line: #e2e0d9;
+  --color-line-strong: #c8c5bc;
+
+  --color-accent: #1f4e79;
+  --color-accent-dark: #163a5b;
+  --color-accent-soft: #e9eff5;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    interpolate-size: allow-keywords;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Respuesta inmediata al presionar un botón */
+@utility press {
+  transition-property: transform, background-color, border-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-strong);
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Hero de escultura (21st.dev): el texto se alinea con el contenedor max-w-6xl del resto de la página */
+#inicio .sh-content {
+  padding-inline: max(1rem, calc((100cqw - 72rem) / 2 + 1rem));
+}
+
+@media (min-width: 640px) {
+  #inicio .sh-content {
+    padding-inline: max(1.5rem, calc((100cqw - 72rem) / 2 + 1.5rem));
+  }
+}
+
+/* FAQ con <details>: accesible sin JS, indexable y animado donde el navegador lo soporta */
+details.faq::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition:
+    block-size 250ms var(--ease-out-strong),
+    content-visibility 250ms allow-discrete;
+}
+
+details.faq[open]::details-content {
+  block-size: auto;
+}
+
+details.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.faq::details-content {
+    transition: none;
+  }
+}
